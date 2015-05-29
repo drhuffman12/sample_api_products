@@ -49,7 +49,7 @@ module ProductApi
 
   class Data < Grape::API
 
-    PARAM_KEYS = [:name, :type, :length, :width, :height, :weight]
+    PARAM_KEYS = [:id, :_id, :name, :type, :length, :width, :height, :weight]
 
     resource :product_api_data do
 
@@ -66,7 +66,7 @@ module ProductApi
       end
       # list:
       get do
-        if (PARAM_KEYS - params.keys).empty?
+        if (PARAM_KEYS & params.keys).count == 0
           Product.all
         else
           prod = Product
@@ -92,14 +92,18 @@ module ProductApi
       end
       # create:
       post do
-        Product.create!({
-                            name:params[:name],
-                            type:params[:type],
-                            length:params[:length],
-                            width:params[:width],
-                            height:params[:height],
-                            weight:params[:weight]
-                        })
+        begin
+          Product.create!({
+                              name:params[:name],
+                              type:params[:type],
+                              length:params[:length],
+                              width:params[:width],
+                              height:params[:height],
+                              weight:params[:weight]
+                          })
+        rescue Exception => e
+          error!(e.message + "; params: #{params}", 400)
+        end
       end
 
       desc "Delete a product"
@@ -108,7 +112,15 @@ module ProductApi
       end
       delete ':_id' do
         # Product.find(params[:id]).destroy!
-        Product.find(params[:_id]).destroy!
+        # Product.find(params[:_id]).destroy!
+        begin
+          prod = Product.find(params[:_id])
+          prod.destroy!
+        rescue Mongoid::Errors::DocumentNotFound
+          false
+        rescue Exception => e
+          error!(e.message + "; params: #{params}", 400)
+        end
       end
 
       desc "Update a product"
@@ -122,14 +134,20 @@ module ProductApi
         optional :weight, type:Integer
       end
       put ':_id' do
-        prod = Product.find(params[:_id])
-        prod.update( { name:params[:name] } ) if params[:name]
-        prod.update( { type:params[:type] } ) if params[:type]
-        prod.update( { length:params[:length] } ) if params[:length]
-        prod.update( { width:params[:width] } ) if params[:width]
-        prod.update( { height:params[:height] } ) if params[:height]
-        prod.update( { weight:params[:weight] } ) if params[:weight]
-        prod.save
+        begin
+          prod = Product.find(params[:_id])
+          prod.update( { name:params[:name] } ) if params[:name]
+          prod.update( { type:params[:type] } ) if params[:type]
+          prod.update( { length:params[:length] } ) if params[:length]
+          prod.update( { width:params[:width] } ) if params[:width]
+          prod.update( { height:params[:height] } ) if params[:height]
+          prod.update( { weight:params[:weight] } ) if params[:weight]
+          prod.save
+        rescue Mongoid::Errors::DocumentNotFound
+          error!("Mongoid::Errors::DocumentNotFound for id: #{params[:_id]}; params: #{params}", 400)
+        rescue Exception => e
+          error!(e.message + "; params: #{params}", 400)
+        end
       end
 
     end
