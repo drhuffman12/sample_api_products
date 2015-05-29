@@ -47,9 +47,12 @@
 
 module ProductApi
 
+  class DuplicateKeysError < StandardError
+  end
+
   class Data < Grape::API
 
-    PARAM_KEYS = [:id, :_id, :name, :type, :length, :width, :height, :weight]
+    PARAM_KEYS = ['id', '_id', 'name', 'type', 'length', 'width', 'height', 'weight']
 
     resource :product_api_data do
 
@@ -69,14 +72,14 @@ module ProductApi
         if (PARAM_KEYS & params.keys).count == 0
           Product.all
         else
-          prod = Product
-          prod = prod.where(name:params[:name]) if params[:name]
-          prod = prod.where(type:params[:type]) if params[:type]
-          prod = prod.where(length:params[:length]) if params[:length]
-          prod = prod.where(width:params[:width]) if params[:width]
-          prod = prod.where(height:params[:height]) if params[:height]
-          prod = prod.where(weight:params[:weight]) if params[:weight]
-          prod.first
+          filters = {}
+          filters[:name] = params[:name] if params[:name]
+          filters[:type] = params[:type] if params[:type]
+          filters[:length] = params[:length] if params[:length]
+          filters[:width] = params[:width] if params[:width]
+          filters[:height] = params[:height] if params[:height]
+          filters[:weight] = params[:weight] if params[:weight]
+          prod = Product.find_by(filters)
         end
       end
 
@@ -92,18 +95,19 @@ module ProductApi
       end
       # create:
       post do
-        begin
-          Product.create!({
-                              name:params[:name],
-                              type:params[:type],
-                              length:params[:length],
-                              width:params[:width],
-                              height:params[:height],
-                              weight:params[:weight]
-                          })
-        rescue Exception => e
-          error!(e.message + "; params: #{params}", 400)
-        end
+        filters = {}
+        filters[:name] = params[:name] if params[:name]
+        filters[:type] = params[:type] if params[:type]
+        prod = Product.find_by(filters)
+        raise DuplicateKeysError, 'record already exists for specified keys' if prod
+        Product.create!({
+                            name:params[:name],
+                            type:params[:type],
+                            length:params[:length],
+                            width:params[:width],
+                            height:params[:height],
+                            weight:params[:weight]
+                        })
       end
 
       desc "Delete a product"
@@ -111,16 +115,7 @@ module ProductApi
         requires :_id, type: String
       end
       delete ':_id' do
-        # Product.find(params[:id]).destroy!
-        # Product.find(params[:_id]).destroy!
-        begin
-          prod = Product.find(params[:_id])
-          prod.destroy!
-        rescue Mongoid::Errors::DocumentNotFound
-          false
-        rescue Exception => e
-          error!(e.message + "; params: #{params}", 400)
-        end
+        Product.find(params[:_id]).destroy!
       end
 
       desc "Update a product"
@@ -134,20 +129,14 @@ module ProductApi
         optional :weight, type:Integer
       end
       put ':_id' do
-        begin
-          prod = Product.find(params[:_id])
-          prod.update( { name:params[:name] } ) if params[:name]
-          prod.update( { type:params[:type] } ) if params[:type]
-          prod.update( { length:params[:length] } ) if params[:length]
-          prod.update( { width:params[:width] } ) if params[:width]
-          prod.update( { height:params[:height] } ) if params[:height]
-          prod.update( { weight:params[:weight] } ) if params[:weight]
-          prod.save
-        rescue Mongoid::Errors::DocumentNotFound
-          error!("Mongoid::Errors::DocumentNotFound for id: #{params[:_id]}; params: #{params}", 400)
-        rescue Exception => e
-          error!(e.message + "; params: #{params}", 400)
-        end
+        prod = Product.find(params[:_id])
+        prod.update( { name:params[:name] } ) if params[:name]
+        prod.update( { type:params[:type] } ) if params[:type]
+        prod.update( { length:params[:length] } ) if params[:length]
+        prod.update( { width:params[:width] } ) if params[:width]
+        prod.update( { height:params[:height] } ) if params[:height]
+        prod.update( { weight:params[:weight] } ) if params[:weight]
+        prod.save
       end
 
     end
