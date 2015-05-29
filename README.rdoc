@@ -41,24 +41,13 @@ Helpful Hints:
 
 ====
 
-GITHUB location: "https://github.com/drhuffman12/sample_api_products"
-
-====
-
-DONE:
-
-* Built a minimal RESTful API, using Rails and MongoDB, with JSON output and CRUD functions
+* GITHUB location: "https://github.com/drhuffman12/sample_api_products"
 
 * See "/sample_api_products/doc/app/ProductApi.html" for minimal API documentation.
 
 ====
 
 TODO:
-
-Other Requirements:
-- Use proper HTTP error codes
-- Validate data
-- Create a script to populate the DB with the products.json file
 
 *Full Stack Bonus (optional): Build a view that consumes the API with JavaScript, and style it using Twitter Bootstrap
 
