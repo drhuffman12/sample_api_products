@@ -1,28 +1,40 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+See "/sample_api_products/doc/app/ProductApi.html" for minimal API documentation.
 
-Things you may want to cover:
+=================================
 
-* Ruby version
+Ruby/Rails Developer Challenge
+---------------------------------
 
-* System dependencies
+Directions: Build a minimal API, using Rails and MongoDB, for our products (please see attached). The API should be RESTful, serve JSON as the output, and contain the following CRUD functions:
 
-* Configuration
+CREATE
+1. Creates a product
 
-* Database creation
+READ
+1. Shows ALL products
+2. Shows ONE product that best matches a given length/width/height/weight query (For example, if I make an API request for a product with the following dimensions: 48”l X 14”w X 12”h (@ 42lbs) the API should send me back “Golf - Small”.)
 
-* Database initialization
+UPDATE
+1. Updates a product
 
-* How to run the test suite
+DESTROY
+1. Deletes a product
 
-* Services (job queues, cache servers, search engines, etc.)
+---------------------------------
 
-* Deployment instructions
+Other Requirements:
+- Use proper HTTP error codes
+- Validate data
+- Create a script to populate the DB with the products.json file
+- Provide Minimal API Documentation (a sample request with its parameters will suffice)
 
-* ...
+---------------------------------
 
+Helpful Hints:
+-With shipping packages, you can always go bigger, but you can’t go smaller (i.e. if an item is 5”x5”x5", you will need the 6”x5”x6" package, not the 4”x5”x5” package). This is also the case for weight. In terms of interpreting the data, think of dimensions and weight of a product as MAX dimensions and MAX weight.
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+---------------------------------
+
+*Full Stack Bonus (optional): Build a view that consumes the API with JavaScript, and style it using Twitter Bootstrap
