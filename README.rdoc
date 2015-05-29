@@ -1,7 +1,5 @@
 == README
 
-See "/sample_api_products/doc/app/ProductApi.html" for minimal API documentation.
-
 =================================
 
 Ruby/Rails Developer Challenge
@@ -38,3 +36,21 @@ Helpful Hints:
 ---------------------------------
 
 *Full Stack Bonus (optional): Build a view that consumes the API with JavaScript, and style it using Twitter Bootstrap
+
+=================================
+
+* Built a minimal RESTful API, using Rails and MongoDB, with JSON output and CRUD functions
+
+* See "/sample_api_products/doc/app/ProductApi.html" for minimal API documentation.
+
+====
+
+TODO:
+
+Other Requirements:
+- Use proper HTTP error codes
+- Validate data
+- Create a script to populate the DB with the products.json file
+
+*Full Stack Bonus (optional): Build a view that consumes the API with JavaScript, and style it using Twitter Bootstrap
+
