@@ -39,6 +39,8 @@ Helpful Hints:
 
 =================================
 
+GITHUB location: "https://github.com/drhuffman12/sample_api_products"
+
 ====
 
 DONE:
