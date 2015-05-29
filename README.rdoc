@@ -39,6 +39,10 @@ Helpful Hints:
 
 =================================
 
+====
+
+DONE:
+
 * Built a minimal RESTful API, using Rails and MongoDB, with JSON output and CRUD functions
 
 * See "/sample_api_products/doc/app/ProductApi.html" for minimal API documentation.
