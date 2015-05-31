@@ -1,0 +1,48 @@
+// Place all the styles related to the Products controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+* { font-family: Helvetica, Arial;}
+
+table
+{
+  margin: 0.5em;
+  border-spacing: 0.4em;
+  border-collapse: separate; /* collapse */
+}
+
+th
+{
+  margin: 0.2em;
+  border: 0.1em solid gray;
+  padding: 0.4em;
+  background-color: lightgray;
+  vertical-align: top;
+}
+
+td
+{
+  margin: 0.2em;
+  border: 0.1em solid #cccccc;
+  padding: 0.4em;
+  background-color: #e6e6e6;
+  vertical-align: top;
+}
+
+.button
+{
+  margin: 0.1em;
+  border: 0.1em solid blue;
+  padding: 0.1em;
+  background-color: lightblue;
+  color: black;
+}
+
+.button-dangerous
+{
+  margin: 0.1em;
+  border: 0.1em solid red;
+  padding: 0.1em;
+  background-color: pink;
+  color: black;
+}
