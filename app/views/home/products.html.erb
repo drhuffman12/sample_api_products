@@ -1,0 +1,94 @@
+<h1>(via Twitter Bootstrap)</h1>
+
+<script>
+
+  function popup_modal()
+  {
+    $("a[data-target=#myModal]").click(function(ev) {
+      ev.preventDefault();
+      var target = $(this).attr("hrefModal");
+
+      // load the url and show modal on success
+      $("#myModal .modal-body").load(target, function() {
+        $("#myModal").modal("show");
+      });
+    });
+  }
+
+  function alert_click(e, value, row, index, button_name)
+  {
+    alert('You click ' + button_name + ' icon, row.id: ' + row.id + ', row(raw): ' + row + ', row: ' + JSON.stringify(row));
+    console.log(value, row, index);
+  }
+
+  function actionFormatter(value, row, index) {
+    return [
+      '<a class="show ml10" href="javascript:void(0)" hrefModal="/products/' + row.id + '" title="Show" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-eye-open"></i></a>',
+      '<a class="edit ml10" href="javascript:void(0)" hrefModal="/products/' + row.id + '/edit" title="Edit" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-edit"></i></a>',
+      '<a class="remove ml10" href="javascript:void(0)" title="Remove"><i class="glyphicon glyphicon-remove"></i></a>'
+    ].join('');
+  }
+
+  window.actionEvents = {
+    'click .show': function (e, value, row, index) {
+      popup_modal();
+      alert_click(e, value, row, index, 'show');
+    },
+    'click .edit': function (e, value, row, index) {
+      popup_modal();
+      alert_click(e, value, row, index, 'edit');
+    },
+    'click .remove': function (e, value, row, index) {
+      alert('You click remove icon, row(raw): ' + row + ', row.id: ' + row.id + ', row: ' + JSON.stringify(row));
+      $.ajax({
+        url: 'http://localhost:3000/api/v1/product_api_data/' + row.id + '.json',
+        type: 'DELETE',
+        success: function (e, value, row, index) {
+//          $("#mylist").load(location.href + " #mylist");
+          alert_click(e, value, row, index, 'remove');
+          location.reload();
+        }
+      })
+    }
+  };
+</script>
+
+<!-- List -->
+<table id="mylist"
+       data-toggle="table"
+       data-url="/api/v1/product_api_data.json"
+
+       data-pagination="true"
+       data-search="true"
+       data-show-refresh="true"
+       data-show-toggle="true"
+       data-show-columns="true"
+       data-toolbar="#toolbar"
+
+       class="table table-striped table-bordered table-hover table-condensed table-responsive"
+>
+  <thead>
+  <tr>
+    <th data-field="id" data-sortable="true">ID</th>
+    <th data-field="name" data-sortable="true">Name</th>
+    <th data-field="type" data-sortable="true">type</th>
+    <th data-field="length" data-sortable="true">length</th>
+    <th data-field="width" data-sortable="true">width</th>
+    <th data-field="height" data-sortable="true">height</th>
+    <th data-field="weight" data-sortable="true">weight</th>
+    <th data-field="action" data-sortable="true" data-formatter="actionFormatter" data-events="actionEvents">Actions</th>
+  </tr>
+  </thead>
+</table>
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Header</h3>
+  </div>
+  <div class="modal-body"></div>
+  <div class="modal-footer">
+    <input type="submit" class="btn btn-success" value="Save"/>
+  </div>
+</div>
