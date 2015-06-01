@@ -75,11 +75,11 @@ module ProductApi
           filters = {}
           filters[:name] = params[:name] if params[:name]
           filters[:type] = params[:type] if params[:type]
-          filters[:length] = params[:length] if params[:length]
-          filters[:width] = params[:width] if params[:width]
-          filters[:height] = params[:height] if params[:height]
-          filters[:weight] = params[:weight] if params[:weight]
-          prod = Product.find_by(filters)
+          filters[:length] = { "$gte" => params[:length] } if params[:length]
+          filters[:width] = { "$gte" => params[:width] } if params[:width]
+          filters[:height] = { "$gte" => params[:height] } if params[:height]
+          filters[:weight] = { "$gte" => params[:weight] } if params[:weight]
+          prod = Product.order_by([[:length, :asc], [:width, :asc], [:height, :asc], [:weight, :asc]]).find_by(filters)
         end
       end
 
