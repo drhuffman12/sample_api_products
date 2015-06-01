@@ -8,4 +8,9 @@ class Product
   field :weight, type: Integer
 
   validates_uniqueness_of :name, :scope => [:type]
+  validates_presence_of :name, :type # , :length, :width, :height, :weight
+  validates_numericality_of :length, :greater_than => 0
+  validates_numericality_of :width, :greater_than => 0
+  validates_numericality_of :height, :greater_than => 0
+  validates_numericality_of :weight, :greater_than => 0
 end
