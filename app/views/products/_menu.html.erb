@@ -1,0 +1,5 @@
+<%= (link_to 'List', products_path , {class: 'button'}) if ['edit','new','show'].include?(action_name) %>
+<%= (link_to 'New', new_product_path , {class: 'button'}) if ['index'].include?(action_name) %>
+<%= (link_to 'Show', @product , {class: 'button'}) if ['edit'].include?(action_name) %>
+<%= (link_to 'Edit', edit_product_path(@product) , {class: 'button'}) if ['show'].include?(action_name) %>
+<%= (link_to 'Delete', @product , {class: 'button-dangerous', data: { confirm: 'Are you sure?' }}) if ['edit','show'].include?(action_name) %>

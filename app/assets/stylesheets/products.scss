@@ -11,6 +11,15 @@ table
   border-collapse: separate; /* collapse */
 }
 
+.table-cell-buttons
+{
+  background: transparent;
+  border: 0em solid transparent;
+}
+
+tr:nth-child(even) {background: #f0f0f0}
+tr:nth-child(odd) {background: #FFF}
+
 th
 {
   margin: 0.2em;
@@ -25,16 +34,16 @@ td
   margin: 0.2em;
   border: 0.1em solid #cccccc;
   padding: 0.4em;
-  background-color: #e6e6e6;
+  //background-color: #f0f0f0;
   vertical-align: top;
 }
 
 .button
 {
   margin: 0.1em;
-  border: 0.1em solid blue;
+  border: 0.1em solid gray;
   padding: 0.1em;
-  background-color: lightblue;
+  background-color: lightgray;
   color: black;
 }
 
