@@ -87,6 +87,9 @@
       "width": 15,
       "height": 7,
       "weight": 25
+    },
+    {
+      "foo": "this should error"
     }
   ]
 }
