@@ -37,13 +37,15 @@ def load_products
         errored_qty += 1
         error_msg = "\n\n" + '='*80 + "\n== Error:#{e.message}"
         error_msg << "\n\n== Data:\n#{jd}"
-        error_msg << "\n\n== Error Backtrace:\n#{e.backtrace}"
+        error_msg << "\n\n== Error Backtrace:\n" + e.backtrace.join("\n") + "\n"
         File.open(error_path, 'a') {|f| f << error_msg }
       end
     end
   rescue => e
     errored_qty += 1
-    File.open(error_path, 'a') {|f| f << "#{{error_message: e.message, error_backtrace: e.backtrace}.inspect}\n" }
+    error_msg = "\n\n" + '='*80 + "\n== Error:#{e.message}"
+    error_msg << "\n\n== Error Backtrace:\n" + e.backtrace.join("\n") + "\n"
+    File.open(error_path, 'a') {|f| f << error_msg }
   end
   File.open(log_path, 'a') { |f| f.write("\n\n#{loaded_qty} out of #{record_count} loaded.") }
   File.open(error_path, 'a') { |f| f.write("\n\n#{errored_qty} out of #{record_count} errored.") }
